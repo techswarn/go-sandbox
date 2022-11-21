@@ -1,0 +1,2 @@
+# github.com/mattwelke/go-fish v1.0.2
+github.com/mattwelke/go-fish/strings

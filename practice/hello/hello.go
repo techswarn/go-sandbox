@@ -1,9 +1,9 @@
 package main
 
 import ( "fmt"
-		"rsc.io/quote"
+		 "github.com/mattwelke/go-fish/strings"
 )
 
 func main() {
-	fmt.Println(quote.Go())
+	fmt.Printf("%s\n", strings.AddFish("Iceland is on my bucket list"))
 }
