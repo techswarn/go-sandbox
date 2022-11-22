@@ -1,4 +1,4 @@
-//https://www.digitalocean.com/community/conceptual-articles/understanding-pointers-in-go
+// https://www.digitalocean.com/community/conceptual-articles/understanding-pointers-in-go
 
 package main
 
