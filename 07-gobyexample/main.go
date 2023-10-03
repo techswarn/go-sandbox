@@ -7,7 +7,7 @@ func main() {
 	// forloop()
 	// ifelse()
 	// switchstatement()
-	// arrays()
+	 arrays()
 	// slicefile()
 	// mapsfile()
 	// rangefile()
@@ -20,7 +20,7 @@ func main() {
 	// structsmethods()
 	// interfaces()
 	// routines()
-	calculator()
+
 }
 
 

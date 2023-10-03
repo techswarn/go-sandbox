@@ -15,6 +15,7 @@ func main() {
 	}
 
 	for l := range c {
+		fmt.Println(l)
 		go func (l string){
 			time.Sleep(5 * time.Second)
 			statusChecker(l, c)
