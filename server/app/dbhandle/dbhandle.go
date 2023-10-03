@@ -26,7 +26,6 @@ func Connect() (*gorm.DB, error) {
 	dbname := os.Getenv("dbname")
 
 	dsn := dbuser + ":" + dbpassword + "@tcp(" + dbhost + ":" + dbport + ")/" + dbname + "?charset=utf8mb4&parseTime=True&loc=Local"
-	//	dsn := "doadmin:AVNS_XdYhFf9oNHYUtNoZbAV@tcp(db-mysql-blr-do-user-11648032-0.b.db.ondigitalocean.com:25060)/defaultdb?charset=utf8mb4&parseTime=True&loc=Local"
 	db, err := gorm.Open(mysql.Open(dsn), &gorm.Config{})
 	// db, err := gorm.Open("sqlite3", "test.db")
 	if err != nil {
