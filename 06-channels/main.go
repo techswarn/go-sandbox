@@ -7,13 +7,15 @@ import (
 )
 
 func main() {
-	links := []string{"https://www.google.co.in/", "https://www.spacex.com/"}
+	
+	links := []string{"http://127.0.0.1:3000/api/v1/blogs"}
 	c := make(chan string)
 
 	for _, link := range links {
-		go statusChecker(link, c)
+		for i:=0; i<1000; i++ {
+			go statusChecker(link, c)
+		}
 	}
-
 	for l := range c {
 		fmt.Println(l)
 		go func (l string){
