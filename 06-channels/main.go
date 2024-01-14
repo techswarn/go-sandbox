@@ -3,23 +3,24 @@ package main
 import (
 	"fmt"
 	"net/http"
-	"time"
+    "time"
+	"sync"
 )
 
 func main() {
 	
-	links := []string{"http://127.0.0.1:3000/api/v1/blogs"}
+	links := []string{"https://seal-app-lskga.ondigitalocean.app/api/v1/event/dbpoolcon",}
 	c := make(chan string)
-
+	wg := sync.WaitGroup{}
 	for _, link := range links {
-		for i:=0; i<1000; i++ {
 			go statusChecker(link, c)
-		}
 	}
 	for l := range c {
 		fmt.Println(l)
+		wg.Add(1)
 		go func (l string){
-			time.Sleep(5 * time.Second)
+			defer wg.Done()
+			time.Sleep(1 * time.Second)
 			statusChecker(l, c)
 		}(l)
 	}
