@@ -27,7 +27,7 @@ func main() {
 	// In order to use our pool of workers we need to send
 	// them work and collect their results. We make 2
 	// channels for this.
-	const numJobs = 10000000000
+	const numJobs = 1000
 	jobs := make(chan int, numJobs)
 	results := make(chan int, numJobs)
 
