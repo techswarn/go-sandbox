@@ -27,13 +27,13 @@ func main() {
 	// In order to use our pool of workers we need to send
 	// them work and collect their results. We make 2
 	// channels for this.
-	const numJobs = 1000
+	const numJobs = 10000000000
 	jobs := make(chan int, numJobs)
 	results := make(chan int, numJobs)
 
 	// This starts up 3 workers, initially blocked
 	// because there are no jobs yet.
-	for w := 1; w <= 3; w++ {
+	for w := 1; w <= 5; w++ {
 		go worker(w, jobs, results)
 	}
 
