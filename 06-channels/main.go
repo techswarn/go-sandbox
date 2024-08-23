@@ -9,7 +9,7 @@ import (
 
 func main() {
 	
-	links := []string{"https://go.techenv.dev/api/v1/"}
+	links := []string{"https://imgprocess-app-qeopc.ondigitalocean.app/process"}
 	c := make(chan string)
 	wg := sync.WaitGroup{}
 	for _, link := range links {
@@ -20,7 +20,7 @@ func main() {
 		wg.Add(1)
 		go func (l string){
 			defer wg.Done()
-			time.Sleep(1 * time.Second)
+			time.Sleep(4 * time.Second)
 			statusChecker(l, c)
 		}(l)
 	}
