@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"time"
 	"runtime"
+	"log"
 )
 
 // Here's the worker, of which we'll run several
@@ -35,6 +36,8 @@ func main() {
 	// This starts up 3 workers, initially blocked
 	// because there are no jobs yet.
 	for w := 1; w <= runtime.NumCPU(); w++ {
+		log.Printf("CPU count: %d \n", runtime.NumCPU())
+		log.Printf("GO routine count: %d \n", runtime.NumGoroutine())
 		go worker(w, jobs, results)
 	}
 
