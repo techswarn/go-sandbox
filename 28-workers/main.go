@@ -6,6 +6,7 @@ package main
 import (
 	"fmt"
 	"time"
+	"runtime"
 )
 
 // Here's the worker, of which we'll run several
@@ -33,7 +34,7 @@ func main() {
 
 	// This starts up 3 workers, initially blocked
 	// because there are no jobs yet.
-	for w := 1; w <= 5; w++ {
+	for w := 1; w <= runtime.NumCPU(); w++ {
 		go worker(w, jobs, results)
 	}
 
