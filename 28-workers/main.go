@@ -37,7 +37,7 @@ func main() {
 	// because there are no jobs yet.
 	threads := runtime.NumCPU()
 	fmt.Println(threads)
-	for w := 1; w <= runtime.NumCPU(); w++ {
+	for w := 1; w <= 14; w++ {
 		log.Printf("CPU count: %d \n", runtime.NumCPU())
 		log.Printf("GO routine count: %d \n", runtime.NumGoroutine())
 		go worker(w, jobs, results)
