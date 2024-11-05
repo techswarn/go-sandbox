@@ -10,6 +10,7 @@ import (
 	"github.com/go-redis/redis/v8"
 	"os"
 	"errors"
+	"runtime"
 )
 
 const emailQueueList = "jobs"
@@ -94,7 +95,6 @@ func processjobs(j JobInfo, c *redis.Client, job string) {
 
 func checkCores() int {
 	cpuCores := runtime.NumCPU();
-	fmt.Printf("Number of CPU cores: %d \n", cpuCores)
 	return cpuCores
 }
 
