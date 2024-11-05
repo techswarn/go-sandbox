@@ -70,10 +70,7 @@ func main() {
 		if err != nil {
 			log.Fatal("job info unmarshal issue issue", err)
 		}
-
-		for w:=0; w<=checkCores(); w++ {
 			go processjobs(jobInfo, client, job)
-		}
 	}
 
 }
