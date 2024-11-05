@@ -3,13 +3,13 @@ package main
 import (
 	"context"
 	"encoding/json"
-	"errors"
 	"fmt"
 	"log"
 	"time"
     "github.com/joho/godotenv"
 	"github.com/go-redis/redis/v8"
 	"os"
+	"errors"
 )
 
 const emailQueueList = "jobs"
@@ -70,18 +70,32 @@ func main() {
 			log.Fatal("job info unmarshal issue issue", err)
 		}
 
-		fmt.Println("received job", jobInfo.JobId)
-		fmt.Println("sending email", jobInfo.Email.Message, "to", jobInfo.Email.To)
-
-		go func() {
-			err = client.LRem(context.Background(), "jobs-temp", 0, job).Err()
-			if err != nil {
-				log.Fatal("lrem failed for", job, "error", err)
-			}
-			log.Println("removed job from temporary list", job)
-		}()
+		for w:=0; w<=checkCores(); w++ {
+			go processjobs(jobInfo, client, job)
+		}
 	}
 
+}
+
+func processjobs(j JobInfo, c *redis.Client, job string) {
+
+	fmt.Println("received job", j.JobId)
+	time.Sleep(10 * time.Second)
+	fmt.Println("sending email", j.Email.Message, "to", j.Email.To)
+
+	// go func() {
+	// 	err = client.LRem(context.Background(), "jobs-temp", 0, job).Err()
+	// 	if err != nil {
+	// 		log.Fatal("lrem failed for", job, "error", err)
+	// 	}
+	// 	log.Println("removed job from temporary list", job)
+	// }()
+}
+
+func checkCores() int {
+	cpuCores := runtime.NumCPU();
+	fmt.Printf("Number of CPU cores: %d \n", cpuCores)
+	return cpuCores
 }
 
 type Email struct {
