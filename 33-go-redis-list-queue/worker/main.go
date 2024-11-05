@@ -78,7 +78,7 @@ func main() {
 func processjobs(j JobInfo, c *redis.Client, job string) {
 
 	fmt.Println("received job", j.JobId)
-	time.Sleep(60 * time.Second)
+	time.Sleep(3600 * time.Second)
 	fmt.Println("sending email", j.Email.Message, "to", j.Email.To)
 
 	// go func() {
