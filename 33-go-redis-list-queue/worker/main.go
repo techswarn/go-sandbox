@@ -11,6 +11,8 @@ import (
 	"os"
 	"errors"
 	"runtime"
+	"crypto/x509"
+	"crypto/tls"
 )
 
 const emailQueueList = "jobs"
@@ -18,13 +20,32 @@ const emailTempQueueList = "jobs-temp"
 var client *redis.Client
 
 func Client() *redis.Client {
-	fmt.Println(GetValue("REDIS_URL"))
-	url := GetValue("REDIS_URL")
-    opts, err := redis.ParseURL(url)
-    if err != nil {
-        panic(err)
-    }
-    return redis.NewClient(opts)
+	caCert, err := os.ReadFile(GetValue("REDIS_CERT"))
+	if err != nil {
+		log.Fatal(err)
+	}
+	caCertPool := x509.NewCertPool()
+	caCertPool.AppendCertsFromPEM(caCert)
+
+	// fmt.Println(GetValue("REDIS_URL"))
+	// url := GetValue("REDIS_URL")
+    // opts, err := redis.ParseURL(url)
+    // if err != nil {
+    //     panic(err)
+    // }
+    // return redis.NewClient(opts)
+	client := redis.NewClient(&redis.Options{
+		Addr:     "db-redis-do-user-11648032-0.k.db.ondigitalocean.com:25061",
+		Username: "default", // use your Redis user. More info https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/
+		Password: "AVNS_NesJxMxaEWXyOiTfw_W", // use your Redis password
+		TLSConfig: &tls.Config{
+			MinVersion:   tls.VersionTLS12,
+//			Certificates: []tls.Certificate{cert},
+			RootCAs:      caCertPool,
+		},
+	})
+
+	return client
 }
 
 func GetValue(key string) string {
@@ -70,7 +91,7 @@ func main() {
 		if err != nil {
 			log.Fatal("job info unmarshal issue issue", err)
 		}
-			go processjobs(jobInfo, client, job)
+		go processjobs(jobInfo, client, job)
 	}
 
 }
