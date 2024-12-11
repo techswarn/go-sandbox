@@ -27,25 +27,13 @@ func Client() *redis.Client {
 	caCertPool := x509.NewCertPool()
 	caCertPool.AppendCertsFromPEM(caCert)
 
-	// fmt.Println(GetValue("REDIS_URL"))
-	// url := GetValue("REDIS_URL")
-    // opts, err := redis.ParseURL(url)
-    // if err != nil {
-    //     panic(err)
-    // }
-    // return redis.NewClient(opts)
-	client := redis.NewClient(&redis.Options{
-		Addr:     "db-redis-do-user-11648032-0.k.db.ondigitalocean.com:25061",
-		Username: "default", // use your Redis user. More info https://redis.io/docs/latest/operate/oss_and_stack/management/security/acl/
-		Password: "AVNS_NesJxMxaEWXyOiTfw_W", // use your Redis password
-		TLSConfig: &tls.Config{
-			MinVersion:   tls.VersionTLS12,
-//			Certificates: []tls.Certificate{cert},
-			RootCAs:      caCertPool,
-		},
-	})
-
-	return client
+	fmt.Println(GetValue("REDIS_URL"))
+	url := GetValue("REDIS_URL")
+    opts, err := redis.ParseURL(url)
+    if err != nil {
+        panic(err)
+    }
+    return redis.NewClient(opts)
 }
 
 func GetValue(key string) string {
