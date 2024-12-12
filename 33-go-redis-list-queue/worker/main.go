@@ -10,9 +10,6 @@ import (
 	"github.com/go-redis/redis/v8"
 	"os"
 	"errors"
-	"runtime"
-	"crypto/x509"
-	"crypto/tls"
 )
 
 const emailQueueList = "jobs"
@@ -20,13 +17,6 @@ const emailTempQueueList = "jobs-temp"
 var client *redis.Client
 
 func Client() *redis.Client {
-	caCert, err := os.ReadFile(GetValue("REDIS_CERT"))
-	if err != nil {
-		log.Fatal(err)
-	}
-	caCertPool := x509.NewCertPool()
-	caCertPool.AppendCertsFromPEM(caCert)
-
 	fmt.Println(GetValue("REDIS_URL"))
 	url := GetValue("REDIS_URL")
     opts, err := redis.ParseURL(url)
@@ -64,7 +54,7 @@ func main() {
 	for {
 
 		val, err := client.BLMove(context.Background(), emailQueueList, emailTempQueueList, "RIGHT", "LEFT", 2*time.Second).Result()
-		time.Sleep(10 * time.Millisecond)
+
 		if err != nil {
 			if errors.Is(err, redis.Nil) {
 				continue
@@ -79,29 +69,19 @@ func main() {
 		if err != nil {
 			log.Fatal("job info unmarshal issue issue", err)
 		}
-		go processjobs(jobInfo, client, job)
+
+		fmt.Println("received job", jobInfo.JobId)
+		fmt.Println("sending email", jobInfo.Email.Message, "to", jobInfo.Email.To)
+	
+		go func() {
+			err = client.LRem(context.Background(), "jobs-temp", 0, job).Err()
+			if err != nil {
+				log.Fatal("lrem failed for", job, "error", err)
+			}
+			log.Println("removed job from temporary list", job)
+		}()
 	}
 
-}
-
-func processjobs(j JobInfo, c *redis.Client, job string) {
-
-	fmt.Println("received job", j.JobId)
-	time.Sleep(3600 * time.Second)
-	fmt.Println("sending email", j.Email.Message, "to", j.Email.To)
-
-	// go func() {
-	// 	err = client.LRem(context.Background(), "jobs-temp", 0, job).Err()
-	// 	if err != nil {
-	// 		log.Fatal("lrem failed for", job, "error", err)
-	// 	}
-	// 	log.Println("removed job from temporary list", job)
-	// }()
-}
-
-func checkCores() int {
-	cpuCores := runtime.NumCPU();
-	return cpuCores
 }
 
 type Email struct {
