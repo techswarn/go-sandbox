@@ -5,11 +5,12 @@ import (
 	"net/http"
     "time"
 	"sync"
+	_ "bytes"
 )
 
 func main() {
 	
-	links := []string{"https://go.techenv.dev/api/v1/", "https://go.techenv.dev/api/v1/", "https://go.techenv.dev/api/v1/", "https://go.techenv.dev/api/v1/", "https://go.techenv.dev/api/v1/"}
+	links := []string{"https://mageova.network/encuesta-jal-c/", "https://mageova.network/encuesta-jal-c/", "https://mageova.network/encuesta-jal-c/", "https://mageova.network/encuesta-jal-c/"}
 	c := make(chan string)
 	wg := sync.WaitGroup{}
 	for _, link := range links {
@@ -26,14 +27,16 @@ func main() {
 
 func statusChecker(link string, c chan string) {
 		currentTime := time.Now()
-		_ = currentTime
+		//buf := new(bytes.Buffer)
 		resp, err := http.Get(link)
+		responseTime := time.Since(currentTime).Milliseconds()
 		if err != nil {
 			fmt.Println(link, " is down")
 			c <- link
 			return
 		}
-		fmt.Printf("The status of website: %s is %d at time %d-%d-%d %d:%d:%d \n", link, resp.StatusCode, currentTime.Year(), currentTime.Month(), currentTime.Day(), currentTime.Hour(), currentTime.Minute(), currentTime.Second() )
+		//fmt.Printf("The status of website: %s is %d at time %d-%d-%d %d:%d:%d \n", link, resp.StatusCode, responseTime, currentTime.Year(), currentTime.Month(), currentTime.Day(), currentTime.Hour(), currentTime.Minute(), currentTime.Second() )
+        fmt.Printf("The status of website: %s is %d at time %d \n", link, resp.StatusCode, responseTime)
 		c <- link
 
 }
