@@ -1,3 +1,11 @@
+package main
+
+func main() {
+    fmt.Println(isValid("()")) // true
+    fmt.Println(isValid("()[]{}")) // true
+}
+
+
 func isValid(s string) bool {
     stack := linkedliststack.New()
     closeToOpen := map[rune]rune{')': '(', ']': '[', '}': '{'}
@@ -19,3 +27,4 @@ func isValid(s string) bool {
 
     return stack.Empty()
 }
+

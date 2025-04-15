@@ -4,6 +4,7 @@ import (
 	"log"
 	"net/http"
 	"fmt"
+	"sync"
 )
 
 type Site struct {
@@ -15,7 +16,8 @@ type Result struct {
 	Status int
 }
 
-func pingWebsite(wId int, jobs <-chan Site, results chan<- Result) {
+func pingWebsite(wId int, jobs <-chan Site, results chan<- Result, wg *sync.WaitGroup) {
+	defer wg.Done()
 	for site := range jobs {
 		resp, err := http.Get(site.URL)
 		if err != nil {
@@ -23,7 +25,7 @@ func pingWebsite(wId int, jobs <-chan Site, results chan<- Result) {
 		}
 		// sending into result channel
 		results <- Result{
-			workerIdMsg:	fmt.Sprintf("\nThe worker id is %d, and status_code",wId),
+			workerIdMsg:	fmt.Sprintf("The worker id is %d, and status_code",wId),
 			URL:    site.URL,
 			Status: resp.StatusCode,
 		}
@@ -31,21 +33,18 @@ func pingWebsite(wId int, jobs <-chan Site, results chan<- Result) {
 }
 
 func main(){
+	var wg sync.WaitGroup
 	jobs := make(chan Site, 3)
 	results := make(chan Result, 3)
 
-	for w:=0; w <= 3;w++ {
-		go pingWebsite(w, jobs, results)
+	for w:=0; w <= 1000;w++ {
+		wg.Add(1)
+		go pingWebsite(w, jobs, results, &wg)
 	} 
 
-	urls := []string{
-		"https://educative.io",
-		"https://educative.io/learn",
-		"https://educative.io/teach",
-		"https://www.educative.io/explore/new",
-		"https://www.educative.io/explore/picks",
-		"https://www.educative.io/explore/early-access",
-		"https://google.com",
+	urls := []string{}
+	for i :=0; i<=9999; i++ {
+		urls = append(urls, "https://lb.techenv.dev/")
 	}
 
 	    // sending into jobs channel
@@ -58,5 +57,5 @@ func main(){
 			result := <-results
 			fmt.Println(result)
 		}
-
+    wg.Wait()
 }

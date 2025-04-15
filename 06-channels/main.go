@@ -10,7 +10,7 @@ import (
 
 func main() {
 	
-	links := []string{"https://mageova.network/encuesta-jal-c/", "https://mageova.network/encuesta-jal-c/", "https://mageova.network/encuesta-jal-c/", "https://mageova.network/encuesta-jal-c/"}
+	links := []string{"https://go.techenv.dev/api/v1/health"}
 	c := make(chan string)
 	wg := sync.WaitGroup{}
 	for _, link := range links {
