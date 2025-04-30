@@ -19,7 +19,7 @@ type Result struct {
 	square int
 }
 
-var size = runtime.GOMAXPROCS(0)
+var size = runtime.GOMAXPROCS(runtime.NumCPU())
 
 var clients = make(chan Client, size)
 var data = make(chan Result, size)

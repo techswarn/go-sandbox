@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"fmt"
 	"sync"
+	"os"
 )
 
 type Site struct {
@@ -17,7 +18,6 @@ type Result struct {
 }
 
 func pingWebsite(wId int, jobs <-chan Site, results chan<- Result, wg *sync.WaitGroup) {
-	defer wg.Done()
 	for site := range jobs {
 		resp, err := http.Get(site.URL)
 		if err != nil {
@@ -30,12 +30,15 @@ func pingWebsite(wId int, jobs <-chan Site, results chan<- Result, wg *sync.Wait
 			Status: resp.StatusCode,
 		}
 	}
+	defer wg.Done()
 }
 
 func main(){
 	var wg sync.WaitGroup
-	jobs := make(chan Site, 3)
-	results := make(chan Result, 3)
+
+	fmt.Printf("OS ARGS: %s\n", os.Args)
+	jobs := make(chan Site, 10)
+	results := make(chan Result, 10)
 
 	for w:=0; w <= 1000;w++ {
 		wg.Add(1)
@@ -44,7 +47,7 @@ func main(){
 
 	urls := []string{}
 	for i :=0; i<=9999; i++ {
-		urls = append(urls, "https://lb.techenv.dev/")
+		urls = append(urls, "https://spaces.techenv.dev/Screenshot%202025-03-10%20at%208.19.52%E2%80%AFPM.png")
 	}
 
 	    // sending into jobs channel
