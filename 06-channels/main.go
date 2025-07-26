@@ -10,7 +10,9 @@ import (
 
 func main() {
 	
-	links := []string{"https://go.techenv.dev/api/v1/health"}
+	links := []string{"https://titan-4o3xp.ondigitalocean.app/","https://titan-4o3xp.ondigitalocean.app/",
+	"https://titan-4o3xp.ondigitalocean.app/","https://titan-4o3xp.ondigitalocean.app/",
+	"https://titan-4o3xp.ondigitalocean.app/","https://titan-4o3xp.ondigitalocean.app/",}
 	c := make(chan string)
 	wg := sync.WaitGroup{}
 	for _, link := range links {
