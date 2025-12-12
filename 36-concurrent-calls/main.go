@@ -10,7 +10,7 @@ import (
 func worker(id int) {
    // fmt.Printf("Worker %d starting\n", id)
 
-	resp, err := http.Get("https://lb.techenv.dev/")
+	resp, err := http.Get("https://backend.nyc3.digitaloceanspaces.com/human.jpg")
 	if err != nil {
 		log.Println(err.Error())
 	}

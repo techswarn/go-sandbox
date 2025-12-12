@@ -40,14 +40,14 @@ func main(){
 	jobs := make(chan Site, 10)
 	results := make(chan Result, 10)
 
-	for w:=0; w <= 1000;w++ {
+	for w:=0; w <= 100;w++ {
 		wg.Add(1)
 		go pingWebsite(w, jobs, results, &wg)
 	} 
 
 	urls := []string{}
 	for i :=0; i<=9999; i++ {
-		urls = append(urls, "https://spaces.techenv.dev/Screenshot%202025-03-10%20at%208.19.52%E2%80%AFPM.png")
+		urls = append(urls, "https://backend.nyc3.digitaloceanspaces.com/human.jpg")
 	}
 
 	    // sending into jobs channel

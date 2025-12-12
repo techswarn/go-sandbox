@@ -10,9 +10,7 @@ import (
 
 func main() {
 	
-	links := []string{"https://titan-4o3xp.ondigitalocean.app/","https://titan-4o3xp.ondigitalocean.app/",
-	"https://titan-4o3xp.ondigitalocean.app/","https://titan-4o3xp.ondigitalocean.app/",
-	"https://titan-4o3xp.ondigitalocean.app/","https://titan-4o3xp.ondigitalocean.app/",}
+	links := []string{"https://heap-app-q2axe.ondigitalocean.app/heapdump", "https://heap-app-q2axe.ondigitalocean.app/heapdump", "https://heap-app-q2axe.ondigitalocean.app/heapdump", "https://heap-app-q2axe.ondigitalocean.app/heapdump", "https://heap-app-q2axe.ondigitalocean.app/heapdump", "https://heap-app-q2axe.ondigitalocean.app/heapdump"}
 	c := make(chan string)
 	wg := sync.WaitGroup{}
 	for _, link := range links {
@@ -31,6 +29,7 @@ func statusChecker(link string, c chan string) {
 		currentTime := time.Now()
 		//buf := new(bytes.Buffer)
 		resp, err := http.Get(link)
+		//fmt.Printf("Response is: %v\n", resp)
 		responseTime := time.Since(currentTime).Milliseconds()
 		if err != nil {
 			fmt.Println(link, " is down")

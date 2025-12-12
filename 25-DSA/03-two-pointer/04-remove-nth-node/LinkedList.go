@@ -18,6 +18,6 @@ func NewLinkedList(values []int) *Linkedlist {
 	return ll
 }
 
-func (ll *Linkedlist) CreateLinkedList(values []int) {
+// func (ll *Linkedlist) CreateLinkedList(values []int) {
 	
-}
+// }
